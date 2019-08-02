@@ -6,12 +6,15 @@ const config = require("config");
 
 const Url = require("../models/Urls");
 
-// @route POST /api/url/shorten
+// @route POST /url/shorten
 // @desc create short URL
 
 router.post("/shorten", async (req, res) => {
   let { longUrl } = req.body;
-  let baseUrl = config.get("baseUrl");
+  let baseUrl =
+    process.env.NODE_ENV === "dev"
+      ? config.get("devBaseUrl")
+      : config.get("liveBaseUrl");
 
   //   Validate base url
   if (!validUrl.isUri(baseUrl)) {
